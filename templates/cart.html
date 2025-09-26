@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section>
+    <h3>Корзина</h3>
+    
+    <form method="POST">
+        <div class="cart">
+            {% if cart_items %}
+            <button type="button" id="all-checked">Выбрать всё</button>
+            <button type="button" id="all-not-checked">Отменить выбор</button>
+
+            {% for item in cart_items %}
+            <div>
+                <input class="checkbox" type="checkbox" name="for_order" value="{{ item.id }}" checked>
+                <div class="item">
+                    <img class="mini" src="{{ item.cover }}" alt="Обложка книги">
+                    <div>
+                        <a href="{{ url_for('main.get_book', id=item.book_id) }}">{{ item.title}}</a><br>
+                        <p>Автор: {{ item.author}}</p>
+                        <p>Цена единицу: {{ item.price}}</p>
+                    </div>
+                    <div class="actions-with-cart">
+                        <label for="cart-item-{{ item.id }}">Количество: </label>
+                        <input class="cart-item-count" type="number" id="item-{{ item.id }}" max="10" min="1" name="{{ item.id }}" required="" value="{{ item.count }}"> 
+                    </div>
+                    <a href="{{ url_for('main.delete_item', id=item.id) }}" class="actions-with-cart" onclick="return confirm('Удалить товар из корзины?')">Удалить из корзины</a>
+                </div>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="">Продолжить оформление заказа</button>
+
+            {% else %}
+            <div>Здесь пусто</div>
+            <a href="{{ url_for('main.home') }}">Перейти в каталог</a>
+            {% endif %}
+        </div>
+    </form>
+</section>
+
+<script>
+    const allChecked = document.getElementById('all-checked');
+    allChecked.addEventListener('click', function() {
+        checkboxes = document.getElementsByClassName('checkbox')
+        for (checkbox of checkboxes) {
+            checkbox.checked = true
+        }
+    })
+
+    const allNotChecked = document.getElementById('all-not-checked');
+    allNotChecked.addEventListener('click', function() {
+        checkboxes = document.getElementsByClassName('checkbox')
+        for (checkbox of checkboxes) {
+            checkbox.checked = false
+        }
+    })
+    
+    const inputs = document.getElementsByClassName('cart-item-count');
+    for (let input of inputs) {
+        input.addEventListener('change', function(event) {
+            $.ajax({
+                url: '/update_cart',
+                data: {'item_id': event.target.name, 'new_count_item': event.target.value},
+                type: 'POST'
+            })
+        });
+}
+</script>
+{% endblock %}

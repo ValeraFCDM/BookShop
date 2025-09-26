@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Подтверждение заказа{% endblock %}
+
+{% block content %}
+    <section>
+        <h3>Подтверждение заказа</h3>
+        <div class="container">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <p>Ознакомьтесь с данными по заказу.</p>
+                <p>После подтверждения ожидайте звонок оператора на указанный номер для уточнения времени и деталей доставки.</p>
+                <ul>
+                    <li>Номер заказа: {{ order.id }}</li>
+                    <li>К оплате: {{ order.details['total'] }}</li>
+                    <li>Получатель: {{ order.details['recipient'] }}</li>
+                    <li>Номер телефона: +7{{ order.details['phone_number'] }}</li>
+                    <li>Способ доставки: {{ order.details['delivery'] }}</li>
+                    <li>Адрес доставки: {{ order.address }}</li>
+                    <li>Способ оплаты: {{ order.details['payment'] }}</li>
+                </ul>
+                <div class="mb-3">
+                    {% for subfield in form.confirm %}
+                        <tr>
+                            <td>{{ subfield }}</td>
+                            <td>{{ subfield.label }}</td>
+                        </tr>
+                    {% endfor %}
+                </div>
+                <button type="submit">Подтвердить заказ</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

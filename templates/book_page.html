@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Информация о книге{% endblock %}
+
+{% block content %}
+<section>
+    <div class="book-card">
+        <img src="{{ book.cover }}" alt="Обложка книги">
+        <div class="book-info">
+            <h3>{{ book.title }}</h3>
+            <p>Автор: {{ book.author }}</p>
+            <p>Жанр: {{ book.genre }}</p>
+            <p>Год: {{ book.year }}</p>
+            <p>Цена: {{ book.price }}</p>
+
+            <div class="book-description">Oписание:<br>{{ book.description }}</div>
+            <p>Оценка пользователей: {{ book.rating }}</p>
+            {% if book_in_cart %}
+                <a href="{{ url_for('main.get_cart')}}">Товар в корзине</a>
+            {% else %}
+                <a href="{{ url_for('main.add_to_cart', id=book.id) }}">Добавить в корзину</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="reviews">
+            {% if current_user.is_authenticated %}
+            <form method="POST">
+                {% if user_left_a_review %}
+                <h4>{{ current_user.username }}, Вы уже поставили оценку этой книге. Вы всегда можете ее поменять:</h4>
+                {% else %}
+                <h4>{{ current_user.username }}, уже прочитали книгу и хотите поделиться впечатлениями? Напишите на нее отзыв:</h4>
+                {% endif %}
+                <div class="mb-3">
+                    <label class="form-label" for="rating">Поставьте свою оценку: </label>
+                    <input class="form-control" type="number" id="rating" max="5" min="1" name="rating" placeholder="От 1 до 5" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="text">Комментарий: </label>
+                    <textarea class="form-control" id="text" name="text" maxlength="400" placeholder="Не более 400 символов"></textarea>
+                </div>
+                <button class="mb-3" type="submit">Поделиться</button>
+            </form><br><br>
+            {% endif %}
+            <h4>Отзывы читателей</h4>
+            {% if reviews %}
+                {% for review in reviews %}
+                    <div class="item">
+                        <div>{{ review.username }}, Оценка: {{ review.rating }}</div>
+                        {% if review.review %}
+                        <div>Комментарий:<br>{{ review.review }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Станьте первым, кто оставит отзыв на эту книгу.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

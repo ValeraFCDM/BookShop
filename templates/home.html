@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h3>ТОП-3 продаж недели</h3>
+    <div class="container">
+        {% for book in top_books %}
+            <div class="book">
+                <img src="{{ book.cover }}" alt="Обложка книги">
+                <div>
+                    <p>{{ book.title }}</p>
+                    <p>Автор: {{ book.author }}</p>
+                    <p>Год: {{ book.year }}</p>
+                    <p>Продано: {{ book.orders_count }} шт.</p>
+                    <a href="{{ url_for('main.get_book', id=book.id) }}">Посмотреть</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section>
+    <h3>Разделы каталога:</h3>
+    <div class="container">
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_1.jfif') }}" alt="Изображение раздела">
+            <div>
+                <p>Художественная литература</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Художественная литература') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_2.jfif') }}" alt="Изображение раздела">
+            <div>
+                <p>Нехудожественная литература</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Нехудожественная литература') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_3.jpg') }}" alt="Изображение раздела">
+            <div>
+                <p>Детская литература</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Детская литература') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_4.jpg') }}" alt="Изображение раздела">
+            <div>
+                <p>Бизнес литература</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Бизнес литература') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_5.jpg') }}" alt="Изображение раздела">
+            <div>
+                <p>Учебная литература</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Учебная литература') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_6.jpg') }}" alt="Изображение раздела">
+            <div>    
+                <p>Книги на иностранном языке</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Книги на иностранном языке') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_7.jfif') }}" alt="Изображение раздела">
+            <div>
+                <p>Комиксы, манга, артбуки</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Комиксы, манга, артбуки') }}">Перейти</a>
+            </div>
+        </div>
+        <div class="catalog-section">
+            <img src="{{ url_for('static', filename='img/cat_sec_8.jpg') }}" alt="Изображение раздела">
+            <div>
+                <p>Весь ассортимент</p>
+                <a href="{{ url_for('main.get_catalog_section', section='Весь ассортимент') }}">Перейти</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

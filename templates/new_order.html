@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+    <section>
+        <h3>Оформление заказа</h3>
+        <div class="container">
+            <table class="table">
+                <th>Книга</th>
+                <th>Количество</th>
+                <th>Цена за шт.</th>
+                <th>Всего</th>
+                {% for item in order_items %}
+                <tr><td>{{ item.title }}</td>
+                    <td>{{ item.count }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+                <tr><td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>
+                <tr><td>К оплате:</td><td></td><td></td><td>{{ total }}</td></tr>
+            </table>
+        </div>
+        <div class="container">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">{{ form.recipient.label(class="form-label") }} {{ form.recipient(class="form-control") }}</div>
+                <div class="mb-5">{{ form.phone_number.label(class="form-label") }} {{ form.phone_number(class="form-control") }}</div>
+                <div class="mb-5">
+                    <p>Cпособ доставки</p>
+                    {% for subfield in form.delivery %}
+                        <tr>
+                            <td>{{ subfield }}</td>
+                            <td>{{ subfield.label }}</td>
+                        </tr>
+                    {% endfor %}
+                </div>
+                <div class="mb-5">{{ form.address.label(class="form-label") }} {{ form.address(class="form-control") }}</div>
+                <div class="mb-3">
+                    <p>Cпособ оплаты (при получении)</p>
+                    {% for subfield in form.payment %}
+                        <tr>
+                            <td>{{ subfield }}</td>
+                            <td>{{ subfield.label }}</td>
+                        </tr>
+                    {% endfor %}
+                </div>
+            <button type="submit">Оформить заказ</button>
+
+            </form>
+        </div>
+    </section>
+{% endblock %}

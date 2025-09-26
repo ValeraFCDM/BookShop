@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Вход в аккаунт{% endblock %}
+
+{% block content %}
+    <h3>Вход в аккаунт</h3>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+        </div>
+        <button type="submit" onclick="return prompt('Введите код из смс:', '0000')">Войти в аккаунт</button>
+    </form><br><br>
+    <p class="text-center mt-3">Нет аккаунта? <a href="{{ url_for('main.register') }}">Зарегистрироваться</a></p>
+
+
+    <script>
+
+    </script>
+{% endblock %}

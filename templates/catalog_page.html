@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<section>
+    <h3>{{ section }}</h3>
+    <div class="container genres">
+        {% for genre in genres %}
+            <a href="#">{{ genre }}</a>
+        {% endfor %}
+    </div>
+    <p>Найдено {{ books|length }} товаров:</p>
+    <div class="container">
+        {% for book in books %}
+            <div class="book preview">
+                <img class="mini" src="{{ book.cover }}" alt="Обложка книги">
+                <div>
+                    <p>{{ book.title }}</p>
+                    <p>Автор: {{ book.author }}</p>
+                    <p>Год: {{ book.year }}</p>
+                    <a href="{{ url_for('main.get_book', id=book.id) }}">Посмотреть</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

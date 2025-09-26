@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Книгarea{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  
+</head>
+
+<body>
+    <header>
+        <div class="d-flex align-items-center ">
+            <a href="{{ url_for('main.home') }}">Книгarea</a>
+            <div class="btn-group p-2">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Каталог</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Художественная литература') }}">Художественная литература</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Нехудожественная литература') }}">Нехудожественная литература</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Детская литература') }}">Детская литература</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Бизнес литература') }}">Бизнес литература</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Учебная литература') }}">Учебная литература</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Книги на иностранном языке') }}">Книги на иностранном языке</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.get_catalog_section', section='Комиксы, манга, артбуки') }}">Комиксы, манга, артбуки</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <form action="/find_book" method="POST" class="d-flex align-items-center">
+            <input type="text" class="border border-1 border-secondary-subtle rounded-3" name="text" placeholder="Я ищу..." required>
+            <button type="submit" class="btn btn-secondary">Найти книгу</button>
+        </form>
+
+
+        <div>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for('main.login') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Вход</a>
+                <a href="{{ url_for('main.register') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Регистрация</a>
+            {% else %}
+                <a href="{{ url_for('main.get_orders') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Заказы</a>
+                <a href="{{ url_for('main.get_cart', id=current_user.id) }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Корзина</a>
+                <a href="{{ url_for('main.logout') }}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" onclick="return confirm('Вы уверены, что хотите выйти?')">Выход</a>
+            {% endif %}
+        </div>
+    </header>
+    <main>
+        <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <div>Контакты: +7 000 000 0000</div>
+        <div>Способы доставки: самовывоз / курьер</div>
+        <div>Оплата: карта / наличные</div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

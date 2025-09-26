@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Информация о заказе{% endblock %}
+
+{% block content %}
+    <section>
+        <h3>Заказ №{{ order.id }}</h3>
+        <div class="container">
+            <table class="table">
+                <th>Книга</th>
+                <th>Количество</th>
+                <th>Цена за шт.</th>
+                <th>Всего</th>
+                {% for book in books %}
+                <tr><td>{{ book.title }}</td>
+                    <td>{{ book.count }}</td>
+                    <td>{{ book.price }}</td>
+                    <td>{{ book.total }}</td>
+                </tr>
+                {% endfor %}
+                <tr><td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>
+                <tr><td>К оплате:</td><td></td><td></td><td>{{ order.details['total'] }}</td></tr>
+            </table>
+        </div>
+        <div class="container">
+            <ul>
+                <li>Дата оформления: {{ order.date }}</li>
+                <li>Статус заказа: {{ order.status }}</li>
+                <li>Получатель: {{ order.details['recipient'] }}</li>
+                <li>Номер телефона: +7{{ order.details['phone_number'] }}</li>
+                <li>Способ доставки: {{ order.details['delivery'] }}</li>
+                <li>Адрес доставки: {{ order.address }}</li>
+                <li>Способ оплаты: {{ order.details['payment'] }}</li>
+            </ul>
+            <p>
+            {% if order.status != 'Выполнен' and order.status != 'Отменён' %}
+                <a href="{{ url_for('main.cancel_order', id=order.id) }}" onclick="return confirm('Вы действительно хотите отменить заказ?')">Отменить заказ</a>
+            {% endif %}
+            </p>
+        </div>
+
+        
+    </section>
+{% endblock %}

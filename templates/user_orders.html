@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}История заказов{% endblock %}
+
+{% block content %}
+<section>
+    <h3>История заказов</h3>
+        <div class="cart">
+            {% if orders %}
+            {% for order in orders %}
+                <div class="item">
+                    <div>
+                        <p>Номер заказа: {{ order.id }}</p>
+                        <p>Статус заказа: {{ order.status }}</p>
+                        <p>Дата оформления: {{ order.date }}</p>
+                        <p>Сумма покупки: {{ order.details['total'] }}</p>
+                    </div>
+                    <a href="{{ url_for('main.get_order', id=order.id) }}" class="actions-with-cart">Подробности заказа</a>
+                    {% if order.status != 'Выполнен' and order.status != 'Отменён' %}
+                    <a href="{{ url_for('main.cancel_order', id=order.id) }}" class="actions-with-cart" onclick="return confirm('Вы действительно хотите отменить заказ?')">Отменить заказ</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+</section>
+{% endblock %}
